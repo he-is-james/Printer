@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import {
+  Box, Button, TextField, Typography,
+} from '@mui/material';
 
 function AddPost({ printer, updateNumPosts }) {
   const [print, setPrint] = useState('');
@@ -30,26 +33,28 @@ function AddPost({ printer, updateNumPosts }) {
   };
 
   return (
-    <div className="AddPost">
-      <text>
-        Write a new Post
+    <Box className="AddPost">
+      <Typography variant="h6">
+        Write a new Print
         {' '}
         {printer}
         :
-      </text>
-      <form className="NewPost">
-        <input type="text" placeholder="Print" value={print} onChange={(e) => setPrint(e.target.value)} />
-        <button type="button" onClick={submitPost}>Print</button>
-      </form>
-      <text>Tags:</text>
-      {tags.map((currentTag) => (
-        <div>{currentTag}</div>
-      ))}
-      <form className="NewTag">
-        <input type="text" placeholder="Tag" value={tag} onChange={(e) => setTag(e.target.value)} />
-        <button type="button" onClick={addTag}>Add Tag</button>
-      </form>
-    </div>
+      </Typography>
+      <Box>
+        <TextField variant="filled" label="Print" value={print} onChange={(e) => setPrint(e.target.value)} />
+        <Button variant="contained" onClick={submitPost}>Print</Button>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2">Tags:</Typography>
+        {tags.map((currentTag) => (
+          <Typography variant="body2">{currentTag}</Typography>
+        ))}
+      </Box>
+      <Box>
+        <TextField variant="filled" label="Tag" value={tag} onChange={(e) => setTag(e.target.value)} />
+        <Button variant="contained" onClick={addTag}>Add Tag</Button>
+      </Box>
+    </Box>
   );
 }
 

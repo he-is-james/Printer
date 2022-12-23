@@ -1,5 +1,8 @@
 /* eslint-disable no-param-reassign */
 import React, { useState, useEffect } from 'react';
+import {
+  Container, Box, Typography, TextField, Button,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import Post from './Post';
 import Sort from './Sort';
@@ -113,29 +116,29 @@ function PostsDisplay({ printer, numPosts }) {
   };
 
   return (
-    <div className="Posts">
+    <Container>
       <Sort setSortSelection={setSortSelection} />
-      <div className="SearchBar">
-        <form>
-          <input type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
-          <button type="button" onClick={searchTags}>Search tags</button>
-        </form>
-      </div>
-      <text>
-        Posts:
-      </text>
-      {posts.sort(sortMethods[sortSelection]).map((post, index) => (
-        <Post
-          id={index}
-          author={post.author}
-          body={post.body}
-          tags={post.tags}
-          likes={post.likes}
-          likePost={likePost}
-          userLiked={post.userLiked}
-        />
-      ))}
-    </div>
+      <Box>
+        <TextField label="Search" variant="outlined" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Button variant="contained" onClick={searchTags}>Search tags</Button>
+      </Box>
+      <Box>
+        <Typography variant="h5">
+          Posts:
+        </Typography>
+        {posts.sort(sortMethods[sortSelection]).map((post, index) => (
+          <Post
+            id={index}
+            author={post.author}
+            body={post.body}
+            tags={post.tags}
+            likes={post.likes}
+            likePost={likePost}
+            userLiked={post.userLiked}
+          />
+        ))}
+      </Box>
+    </Container>
   );
 }
 

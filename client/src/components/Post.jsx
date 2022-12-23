@@ -1,34 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  Box, Card, Typography,
+} from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 function Post({
   id, author, body, tags, likes, likePost, userLiked,
 }) {
   return (
-    <div className="Post">
-      <div className="Printer">
-        {author}
-      </div>
-      <div className="Print">
-        {body}
-      </div>
-      <div className="Tags">
+    <Card>
+      <Typography variant="subtitle1">{author}</Typography>
+      <Typography variant="body1">{body}</Typography>
+      <Box>
         {tags.map((tag) => (
-          <div className="Tag">
-            {tag}
-          </div>
+          <Typography variant="body2">{tag}</Typography>
         ))}
-      </div>
-      <div className="Likes">
+      </Box>
+      <Typography variant="body1">
         Likes:
         {' '}
         {likes.length}
-      </div>
-      <div className="Heart">
-        {userLiked ? 'Liked' : 'Not liked'}
-      </div>
-      <button type="button" onClick={() => { likePost(id, userLiked); }}>Like</button>
-    </div>
+      </Typography>
+      <Box onClick={() => { likePost(id, userLiked); }}>
+        {userLiked
+          ? <FavoriteIcon />
+          : <FavoriteBorderIcon />}
+      </Box>
+    </Card>
   );
 }
 
