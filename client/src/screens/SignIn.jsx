@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   Container, Box, Typography, TextField, Button,
 } from '@mui/material';
+import axios from 'axios';
 import AddPost from '../components/AddPost';
 import PostsDisplay from '../components/PostDisplay';
 
@@ -15,16 +16,28 @@ function SignIn() {
   // Navigation functions to pages
   const navigate = useNavigate();
 
-  const navigateToHome = () => {
-    const userData = {
-      handle,
-      password,
-    };
+  const navigateToHome = (userData) => {
     navigate('/home', { state: userData });
   };
 
   const navigateToSignUp = () => {
     navigate('/sign-up');
+  };
+
+  // Sign in the user
+  const signIn = async () => {
+    const response = await axios.get('http://localhost:4000/user/sign-in', { params: { handle, password } });
+    if (response.data) {
+      const userData = {
+        // eslint-disable-next-line no-underscore-dangle
+        id: response.data._id,
+        handle: response.data.handle,
+        postsLiked: response.data.postsLiked,
+      };
+      navigateToHome(userData);
+    } else {
+      alert('Handle or password is incorrect');
+    }
   };
 
   const getUsers = () => {
@@ -87,7 +100,7 @@ function SignIn() {
             <Button variant="contained" onClick={signUpUser}>Sign Up</Button>
             <Button variant="contained" onClick={loginUser}>Login User</Button>
           </Box>
-          <Button variant="contained" onClick={navigateToHome}>Sign In</Button>
+          <Button variant="contained" onClick={signIn}>Sign In</Button>
           <Box>
             <Typography variant="body1">Don&apos;t have an account?</Typography>
             <Button variant="outlined" onClick={navigateToSignUp}>Sign up</Button>

@@ -1,9 +1,12 @@
 import { Container, Box, Typography } from '@mui/material';
 import React from 'react';
-// import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 function Home() {
-  // const { handle, password } = useLocation().state;
+  const { id, handle, postsLiked } = useLocation().state;
+  console.log(id);
+  console.log(handle);
+  console.log(postsLiked);
   return (
     <Container>
       <Box>

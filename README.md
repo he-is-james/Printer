@@ -5,6 +5,8 @@ An innovative social media app similar to Twitter.
 ## Setup
 Create the frontend as a React app using `npx create-react-app client`.
 
+Install the packages `npm i axios @mui/material @emotion/react @emotion/styled`.
+
 Create the backend as an Express, Node.js server using `mkdir server cd server npm init`.  
 
 Install the packages `npm i express mongoose body-parser cors config` as well as `npm i -D nodemon`.  
