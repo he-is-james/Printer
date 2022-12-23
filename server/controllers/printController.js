@@ -18,6 +18,12 @@ const createPrint = async (req, res) => {
   }
 };
 
+// add user id to likes array
+
+// update tags
+
+// search tags
+
 module.exports = {
   getPrints,
   createPrint,

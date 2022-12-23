@@ -4,6 +4,7 @@ import {
   Box, Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import Post from './Post';
 import Sort from './Sort';
 
@@ -20,20 +21,24 @@ function PostsDisplay({ printerId, numPosts }) {
     l: (a, b) => (a.likes.length - b.likes.length),
   };
 
-  const getLikedPosts = () => {
-    const saved = localStorage.getItem('users');
-    const { postsLiked } = JSON.parse(saved)[printerId];
-    return postsLiked;
+  const getLikedPosts = async () => {
+    const likedPosts = await axios.get('http://localhost:4000/user/liked-posts', { params: { id: printerId } });
+    likedPosts.data.sort();
+    return likedPosts.data;
   };
 
-  const getPosts = () => {
-    const saved = localStorage.getItem('posts');
-    const currentPosts = JSON.parse(saved) || [];
-    const likedPosts = getLikedPosts();
-    likedPosts.sort();
+  const getPosts = async () => {
+    const currentPosts = await axios.get('http://localhost:4000/print/all-prints');
+    return currentPosts.data;
+  };
+
+  const renderPosts = async () => {
+    const currentPosts = await getPosts();
+    const likedPosts = await getLikedPosts();
     let i = 0;
-    currentPosts.forEach((post, index) => {
-      if (index === likedPosts[i]) {
+    currentPosts.forEach((post) => {
+      // eslint-disable-next-line no-underscore-dangle
+      if (post._id === likedPosts[i]) {
         post.userLiked = true;
         i += 1;
       } else {
@@ -41,23 +46,22 @@ function PostsDisplay({ printerId, numPosts }) {
       }
     });
     setPosts(currentPosts);
-    return currentPosts;
   };
 
-  const updateTags = (currentPosts) => {
-    const lastPostId = currentPosts.length - 1;
-    if (lastPostId >= 0) {
-      const currentTags = JSON.parse(localStorage.getItem('tags')) || {};
-      currentPosts[lastPostId].tags.forEach((tag) => {
-        if (currentTags[tag]) {
-          currentTags[tag].push(lastPostId);
-        } else {
-          currentTags[tag] = [lastPostId];
-        }
-      });
-      localStorage.setItem('tags', JSON.stringify(currentTags));
-    }
-  };
+  // const updateTags = (currentPosts) => {
+  //   const lastPostId = currentPosts.length - 1;
+  //   if (lastPostId >= 0) {
+  //     const currentTags = JSON.parse(localStorage.getItem('tags')) || {};
+  //     currentPosts[lastPostId].tags.forEach((tag) => {
+  //       if (currentTags[tag]) {
+  //         currentTags[tag].push(lastPostId);
+  //       } else {
+  //         currentTags[tag] = [lastPostId];
+  //       }
+  //     });
+  //     localStorage.setItem('tags', JSON.stringify(currentTags));
+  //   }
+  // };
 
   const likePost = (postId, userLiked) => {
     if (!userLiked) {
@@ -93,8 +97,7 @@ function PostsDisplay({ printerId, numPosts }) {
   };
 
   useEffect(() => {
-    const currentPosts = getPosts();
-    updateTags(currentPosts);
+    renderPosts();
   }, [numPosts]);
 
   return (
