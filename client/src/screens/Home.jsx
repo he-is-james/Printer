@@ -1,23 +1,49 @@
-import { Container, Box, Typography } from '@mui/material';
-import React from 'react';
+import { Container, Box } from '@mui/material';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import AddPost from '../components/AddPost';
+import PostsDisplay from '../components/PostDisplay';
+import SearchBar from '../components/SearchBar';
 
 function Home() {
-  const { id, handle, postsLiked } = useLocation().state;
+  const { id, handle } = useLocation().state;
   console.log(id);
-  console.log(handle);
-  console.log(postsLiked);
+
+  // Re-render the posts displayed after adding a new post
+  const [numPosts, setNumPosts] = useState(0);
+
+  const updateNumPosts = () => {
+    setNumPosts(numPosts + 1);
+  };
+
+  const searchTags = (tag) => {
+    // const currentPosts = getPosts();
+    // if (search === '') {
+    //   setPosts(currentPosts);
+    // } else {
+    //   const currentTags = JSON.parse(localStorage.getItem('tags')) || {};
+    //   const postsWithTag = currentTags[search];
+    //   const searchedPosts = [];
+    //   console.log(postsWithTag);
+    //   postsWithTag.forEach((id) => {
+    //     searchedPosts.push(currentPosts[id]);
+    //   });
+    //   console.log(searchedPosts);
+    //   setPosts(searchedPosts);
+    // }
+    console.log(tag);
+  };
+
   return (
     <Container>
       <Box>
-        <Typography variant="h5">Search Tags:</Typography>
+        <SearchBar searchTags={searchTags} />
       </Box>
       <Box>
-        <Typography variant="h5">Write a new print:</Typography>
+        <AddPost printerId={id} printer={handle} updateNumPosts={updateNumPosts} />
       </Box>
       <Box>
-        <Typography variant="h5">Prints</Typography>
-
+        <PostsDisplay printerId={id} numPosts={numPosts} />
       </Box>
     </Container>
   );

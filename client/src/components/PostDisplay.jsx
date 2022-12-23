@@ -1,17 +1,16 @@
 /* eslint-disable no-param-reassign */
 import React, { useState, useEffect } from 'react';
 import {
-  Container, Box, Typography, TextField, Button,
+  Box, Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import Post from './Post';
 import Sort from './Sort';
 
-function PostsDisplay({ printer, numPosts }) {
+function PostsDisplay({ printerId, numPosts }) {
   const [posts, setPosts] = useState([]);
   const [updateLikes, setUpdateLikes] = useState(0);
   const [sortSelection, setSortSelection] = useState('');
-  const [search, setSearch] = useState('');
 
   const sortMethods = {
     '': () => null,
@@ -23,7 +22,7 @@ function PostsDisplay({ printer, numPosts }) {
 
   const getLikedPosts = () => {
     const saved = localStorage.getItem('users');
-    const { postsLiked } = JSON.parse(saved)[printer];
+    const { postsLiked } = JSON.parse(saved)[printerId];
     return postsLiked;
   };
 
@@ -64,7 +63,7 @@ function PostsDisplay({ printer, numPosts }) {
     if (!userLiked) {
       const updatedPosts = posts.map((post, index) => {
         if (index === postId) {
-          post.likes = [...post.likes, printer];
+          post.likes = [...post.likes, printerId];
           post.userLiked = true;
         }
         return post;
@@ -73,12 +72,12 @@ function PostsDisplay({ printer, numPosts }) {
       localStorage.setItem('posts', JSON.stringify(updatedPosts));
       setUpdateLikes(updateLikes + 1);
       const currentLikedPosts = JSON.parse(localStorage.getItem('users'));
-      currentLikedPosts[printer].postsLiked.push(postId);
+      currentLikedPosts[printerId].postsLiked.push(postId);
       localStorage.setItem('users', JSON.stringify(currentLikedPosts));
     } else {
       const removeLike = posts.map((post, index) => {
         if (index === postId) {
-          const toRemove = post.likes.indexOf(printer);
+          const toRemove = post.likes.indexOf(printerId);
           post.likes.splice(toRemove, 1);
           post.userLiked = false;
         }
@@ -87,8 +86,8 @@ function PostsDisplay({ printer, numPosts }) {
       localStorage.setItem('posts', JSON.stringify(removeLike));
       setUpdateLikes(updateLikes - 1);
       const currentLikedPosts = JSON.parse(localStorage.getItem('users'));
-      const removeUserLike = currentLikedPosts[printer].postsLiked.indexOf(postId);
-      currentLikedPosts[printer].postsLiked.splice(removeUserLike, 1);
+      const removeUserLike = currentLikedPosts[printerId].postsLiked.indexOf(postId);
+      currentLikedPosts[printerId].postsLiked.splice(removeUserLike, 1);
       localStorage.setItem('users', JSON.stringify(currentLikedPosts));
     }
   };
@@ -98,30 +97,9 @@ function PostsDisplay({ printer, numPosts }) {
     updateTags(currentPosts);
   }, [numPosts]);
 
-  const searchTags = () => {
-    const currentPosts = getPosts();
-    if (search === '') {
-      setPosts(currentPosts);
-    } else {
-      const currentTags = JSON.parse(localStorage.getItem('tags')) || {};
-      const postsWithTag = currentTags[search];
-      const searchedPosts = [];
-      console.log(postsWithTag);
-      postsWithTag.forEach((id) => {
-        searchedPosts.push(currentPosts[id]);
-      });
-      console.log(searchedPosts);
-      setPosts(searchedPosts);
-    }
-  };
-
   return (
-    <Container>
+    <Box>
       <Sort setSortSelection={setSortSelection} />
-      <Box>
-        <TextField label="Search" variant="outlined" value={search} onChange={(e) => setSearch(e.target.value)} />
-        <Button variant="contained" onClick={searchTags}>Search tags</Button>
-      </Box>
       <Box>
         <Typography variant="h5">
           Posts:
@@ -138,12 +116,12 @@ function PostsDisplay({ printer, numPosts }) {
           />
         ))}
       </Box>
-    </Container>
+    </Box>
   );
 }
 
 PostsDisplay.propTypes = {
-  printer: PropTypes.string.isRequired,
+  printerId: PropTypes.string.isRequired,
   numPosts: PropTypes.number.isRequired,
 };
 

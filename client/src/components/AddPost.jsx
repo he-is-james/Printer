@@ -4,12 +4,13 @@ import {
   Box, Button, TextField, Typography,
 } from '@mui/material';
 
-function AddPost({ printer, updateNumPosts }) {
+function AddPost({ printerId, printer, updateNumPosts }) {
   const [print, setPrint] = useState('');
   const [tag, setTag] = useState('');
   const [tags, setTags] = useState([]);
 
   const submitPost = () => {
+    console.log(printerId);
     const saved = localStorage.getItem('posts');
     const currentPosts = JSON.parse(saved) || [];
     const newPost = {
@@ -59,6 +60,7 @@ function AddPost({ printer, updateNumPosts }) {
 }
 
 AddPost.propTypes = {
+  printerId: PropTypes.string.isRequired,
   printer: PropTypes.string.isRequired,
   updateNumPosts: PropTypes.func.isRequired,
 };
