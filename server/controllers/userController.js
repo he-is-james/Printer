@@ -25,7 +25,7 @@ const getUser = async (req, res) => {
 // Get all user liked posts
 const getLikedPosts = async (req, res) => {
   try {
-    const userData = await User.findOne(req.query);
+    const userData = await User.findById(req.query.printerId);
     res.send(userData.postsLiked);
   } catch (err) {
     res.status(404).json({ error: 'Unable to get liked posts' });

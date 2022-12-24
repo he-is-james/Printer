@@ -10,6 +10,7 @@ function AddPost({ printer, setNumPosts }) {
   const [tag, setTag] = useState('');
   const [tags, setTags] = useState([]);
 
+  // Create a new print
   const submitPrint = async () => {
     const newPost = {
       author: printer,
@@ -22,12 +23,14 @@ function AddPost({ printer, setNumPosts }) {
       setPrint('');
       setTags([]);
       setTag('');
+      // Re-render all the posts displayed
       setNumPosts((numPosts) => numPosts + 1);
     } catch (err) {
       alert('Unable to create print');
     }
   };
 
+  // Update the tags array on a print
   const addTag = () => {
     const newTags = [...tags, tag];
     setTags(newTags);
