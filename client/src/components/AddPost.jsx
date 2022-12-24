@@ -5,7 +5,7 @@ import {
   Box, Button, TextField, Typography,
 } from '@mui/material';
 
-function AddPost({ printer, updateNumPosts }) {
+function AddPost({ printer, setNumPosts }) {
   const [print, setPrint] = useState('');
   const [tag, setTag] = useState('');
   const [tags, setTags] = useState([]);
@@ -22,7 +22,7 @@ function AddPost({ printer, updateNumPosts }) {
       setPrint('');
       setTags([]);
       setTag('');
-      updateNumPosts();
+      setNumPosts((numPosts) => numPosts + 1);
     } catch (err) {
       alert('Unable to create print');
     }
@@ -62,7 +62,7 @@ function AddPost({ printer, updateNumPosts }) {
 
 AddPost.propTypes = {
   printer: PropTypes.string.isRequired,
-  updateNumPosts: PropTypes.func.isRequired,
+  setNumPosts: PropTypes.func.isRequired,
 };
 
 export default AddPost;

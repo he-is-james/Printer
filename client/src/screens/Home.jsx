@@ -9,14 +9,9 @@ import Sort from '../components/Sort';
 function Home() {
   const { id, handle } = useLocation().state;
 
-  const [sortSelection, setSortSelection] = useState('');
-
   // Re-render the posts displayed after adding a new post
   const [numPosts, setNumPosts] = useState(0);
-
-  const updateNumPosts = () => {
-    setNumPosts(numPosts + 1);
-  };
+  const [sortSelection, setSortSelection] = useState('');
 
   const searchTags = (tag) => {
     console.log(tag);
@@ -28,7 +23,7 @@ function Home() {
         <SearchBar searchTags={searchTags} />
       </Box>
       <Box>
-        <AddPost printerId={id} printer={handle} updateNumPosts={updateNumPosts} />
+        <AddPost printerId={id} printer={handle} setNumPosts={setNumPosts} />
       </Box>
       <Box>
         <Sort setSortSelection={setSortSelection} />
