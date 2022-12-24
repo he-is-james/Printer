@@ -13,6 +13,8 @@ Install the packages `npm i express mongoose body-parser cors config` as well as
 
 Install `npm i eslint --save-dev` for both folders and use `npx eslint --init` to create the eslint file.
 ## Running
+First, you must create a `.env` file in `server` and set the variables `PORT` and `URI`. The latter is MongoDB's credentials to access your cluster.
+
 To run the frontend, `cd client npm start`. 
  
 To run the backend, `cd server npm start`.

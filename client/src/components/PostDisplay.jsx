@@ -7,12 +7,10 @@ import {
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Post from './Post';
-import Sort from './Sort';
 
-function PostsDisplay({ printerId, numPosts }) {
+function PostsDisplay({ printerId, sortSelection, numPosts }) {
   const [posts, setPosts] = useState([]);
   const [updateLikes, setUpdateLikes] = useState(0);
-  const [sortSelection, setSortSelection] = useState('');
 
   const sortMethods = {
     '': () => {},
@@ -78,30 +76,28 @@ function PostsDisplay({ printerId, numPosts }) {
 
   return (
     <Box>
-      <Sort setSortSelection={setSortSelection} />
-      <Box>
-        <Typography variant="h5">
-          Posts:
-        </Typography>
-        {posts.sort(sortMethods[sortSelection]).map((post) => (
-          <Post
-            key={post._id}
-            id={post._id}
-            author={post.author}
-            body={post.body}
-            tags={post.tags}
-            likes={post.likes}
-            likePost={likePost}
-            userLiked={post.userLiked}
-          />
-        ))}
-      </Box>
+      <Typography variant="h5">
+        Posts:
+      </Typography>
+      {posts.sort(sortMethods[sortSelection]).map((post) => (
+        <Post
+          key={post._id}
+          id={post._id}
+          author={post.author}
+          body={post.body}
+          tags={post.tags}
+          likes={post.likes}
+          likePost={likePost}
+          userLiked={post.userLiked}
+        />
+      ))}
     </Box>
   );
 }
 
 PostsDisplay.propTypes = {
   printerId: PropTypes.string.isRequired,
+  sortSelection: PropTypes.string.isRequired,
   numPosts: PropTypes.number.isRequired,
 };
 

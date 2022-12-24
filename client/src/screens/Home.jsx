@@ -4,9 +4,12 @@ import { useLocation } from 'react-router-dom';
 import AddPost from '../components/AddPost';
 import PostsDisplay from '../components/PostDisplay';
 import SearchBar from '../components/SearchBar';
+import Sort from '../components/Sort';
 
 function Home() {
   const { id, handle } = useLocation().state;
+
+  const [sortSelection, setSortSelection] = useState('');
 
   // Re-render the posts displayed after adding a new post
   const [numPosts, setNumPosts] = useState(0);
@@ -16,20 +19,6 @@ function Home() {
   };
 
   const searchTags = (tag) => {
-    // const currentPosts = getPosts();
-    // if (search === '') {
-    //   setPosts(currentPosts);
-    // } else {
-    //   const currentTags = JSON.parse(localStorage.getItem('tags')) || {};
-    //   const postsWithTag = currentTags[search];
-    //   const searchedPosts = [];
-    //   console.log(postsWithTag);
-    //   postsWithTag.forEach((id) => {
-    //     searchedPosts.push(currentPosts[id]);
-    //   });
-    //   console.log(searchedPosts);
-    //   setPosts(searchedPosts);
-    // }
     console.log(tag);
   };
 
@@ -42,7 +31,8 @@ function Home() {
         <AddPost printerId={id} printer={handle} updateNumPosts={updateNumPosts} />
       </Box>
       <Box>
-        <PostsDisplay printerId={id} numPosts={numPosts} />
+        <Sort setSortSelection={setSortSelection} />
+        <PostsDisplay printerId={id} sortSelection={sortSelection} numPosts={numPosts} />
       </Box>
     </Container>
   );
