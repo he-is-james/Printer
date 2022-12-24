@@ -15,7 +15,7 @@ function Post({
       <Typography variant="body1">{body}</Typography>
       <Box>
         {tags.map((tag) => (
-          <Typography variant="body2">{tag}</Typography>
+          <Typography key={tag} variant="body2">{tag}</Typography>
         ))}
       </Box>
       <Typography variant="body1">
@@ -33,7 +33,7 @@ function Post({
 }
 
 Post.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,

@@ -7,7 +7,9 @@ printRouter.get('/all-prints', printController.getPrints);
 
 printRouter.post('/new-print', printController.createPrint);
 
-printRouter.post('/like-post', printController.likePost);
+printRouter.post('/update-likes', printController.updateLikes);
+
+printRouter.post('/unlike-post', printController.unlikePost);
 
 printRouter.get('/search-tags', printController.searchTags);
 

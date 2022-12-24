@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import React, { useState, useEffect } from 'react';
 import {
@@ -14,7 +15,7 @@ function PostsDisplay({ printerId, numPosts }) {
   const [sortSelection, setSortSelection] = useState('');
 
   const sortMethods = {
-    '': () => null,
+    '': () => {},
     a: (a, b) => (a.body.localeCompare(b.body)),
     z: (a, b) => (b.body.localeCompare(a.body)),
     m: (a, b) => (b.likes.length - a.likes.length),
@@ -37,7 +38,6 @@ function PostsDisplay({ printerId, numPosts }) {
     const likedPosts = await getLikedPosts();
     let i = 0;
     currentPosts.forEach((post) => {
-      // eslint-disable-next-line no-underscore-dangle
       if (post._id === likedPosts[i]) {
         post.userLiked = true;
         i += 1;
@@ -48,57 +48,33 @@ function PostsDisplay({ printerId, numPosts }) {
     setPosts(currentPosts);
   };
 
-  // const updateTags = (currentPosts) => {
-  //   const lastPostId = currentPosts.length - 1;
-  //   if (lastPostId >= 0) {
-  //     const currentTags = JSON.parse(localStorage.getItem('tags')) || {};
-  //     currentPosts[lastPostId].tags.forEach((tag) => {
-  //       if (currentTags[tag]) {
-  //         currentTags[tag].push(lastPostId);
-  //       } else {
-  //         currentTags[tag] = [lastPostId];
-  //       }
-  //     });
-  //     localStorage.setItem('tags', JSON.stringify(currentTags));
-  //   }
-  // };
-
-  const likePost = (postId, userLiked) => {
+  const likePost = async (printId, userLiked) => {
     if (!userLiked) {
-      const updatedPosts = posts.map((post, index) => {
-        if (index === postId) {
-          post.likes = [...post.likes, printerId];
-          post.userLiked = true;
-        }
-        return post;
+      await axios.post('http://localhost:4000/print/update-likes', {
+        printId,
+        command: { $push: { likes: printerId } },
       });
-      setPosts(updatedPosts);
-      localStorage.setItem('posts', JSON.stringify(updatedPosts));
+      await axios.post('http://localhost:4000/user/update-likes', {
+        printerId,
+        command: { $push: { postsLiked: printId } },
+      });
       setUpdateLikes(updateLikes + 1);
-      const currentLikedPosts = JSON.parse(localStorage.getItem('users'));
-      currentLikedPosts[printerId].postsLiked.push(postId);
-      localStorage.setItem('users', JSON.stringify(currentLikedPosts));
     } else {
-      const removeLike = posts.map((post, index) => {
-        if (index === postId) {
-          const toRemove = post.likes.indexOf(printerId);
-          post.likes.splice(toRemove, 1);
-          post.userLiked = false;
-        }
-        return post;
+      await axios.post('http://localhost:4000/print/update-likes', {
+        printId,
+        command: { $pull: { likes: { $in: printerId } } },
       });
-      localStorage.setItem('posts', JSON.stringify(removeLike));
+      await axios.post('http://localhost:4000/user/update-likes', {
+        printerId,
+        command: { $pull: { postsLiked: { $in: printId } } },
+      });
       setUpdateLikes(updateLikes - 1);
-      const currentLikedPosts = JSON.parse(localStorage.getItem('users'));
-      const removeUserLike = currentLikedPosts[printerId].postsLiked.indexOf(postId);
-      currentLikedPosts[printerId].postsLiked.splice(removeUserLike, 1);
-      localStorage.setItem('users', JSON.stringify(currentLikedPosts));
     }
   };
 
   useEffect(() => {
     renderPosts();
-  }, [numPosts]);
+  }, [numPosts, updateLikes]);
 
   return (
     <Box>
@@ -107,9 +83,10 @@ function PostsDisplay({ printerId, numPosts }) {
         <Typography variant="h5">
           Posts:
         </Typography>
-        {posts.sort(sortMethods[sortSelection]).map((post, index) => (
+        {posts.sort(sortMethods[sortSelection]).map((post) => (
           <Post
-            id={index}
+            key={post._id}
+            id={post._id}
             author={post.author}
             body={post.body}
             tags={post.tags}

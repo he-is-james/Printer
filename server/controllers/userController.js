@@ -33,11 +33,9 @@ const getLikedPosts = async (req, res) => {
 };
 
 // Add print id to user liked post array
-const likePost = async (req, res) => {
+const updateLikes = async (req, res) => {
   try {
-    const response = await User.findByIdAndUpdate(req.body.id, {
-      $push: { postsLiked: req.body.printId },
-    });
+    const response = await User.findByIdAndUpdate(req.body.printerId, req.body.command);
     res.send(response);
   } catch (err) {
     res.status(404).json({ error: 'Unable to get liked posts' });
@@ -48,5 +46,5 @@ module.exports = {
   createUser,
   getUser,
   getLikedPosts,
-  likePost,
+  updateLikes,
 };

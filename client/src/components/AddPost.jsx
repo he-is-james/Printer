@@ -17,27 +17,15 @@ function AddPost({ printer, updateNumPosts }) {
       likes: [],
       tags,
     };
-    const response = await axios.post('http://localhost:4000/print/new-print', newPost);
-    console.log(response);
-    setPrint('');
-    setTags([]);
-    setTag('');
-    updateNumPosts();
-    // console.log(printerId);
-    // const saved = localStorage.getItem('posts');
-    // const currentPosts = JSON.parse(saved) || [];
-    // const newPost = {
-    //   author: printer,
-    //   body: print,
-    //   likes: [],
-    //   tags,
-    // };
-    // const updatedPosts = [...currentPosts, newPost];
-    // localStorage.setItem('posts', JSON.stringify(updatedPosts));
-    // setPrint('');
-    // setTags([]);
-    // setTag('');
-    // updateNumPosts();
+    try {
+      await axios.post('http://localhost:4000/print/new-print', newPost);
+      setPrint('');
+      setTags([]);
+      setTag('');
+      updateNumPosts();
+    } catch (err) {
+      alert('Unable to create print');
+    }
   };
 
   const addTag = () => {
@@ -61,7 +49,7 @@ function AddPost({ printer, updateNumPosts }) {
       <Box>
         <Typography variant="subtitle2">Tags:</Typography>
         {tags.map((currentTag) => (
-          <Typography variant="body2">{currentTag}</Typography>
+          <Typography key={currentTag} variant="body2">{currentTag}</Typography>
         ))}
       </Box>
       <Box>

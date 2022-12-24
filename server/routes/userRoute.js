@@ -11,6 +11,6 @@ userRouter.post('/logout');
 
 userRouter.get('/all-liked-posts', userController.getLikedPosts);
 
-userRouter.post('/like-post', userController.likePost);
+userRouter.post('/update-likes', userController.updateLikes);
 
 module.exports = userRouter;

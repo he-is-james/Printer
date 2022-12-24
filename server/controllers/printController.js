@@ -20,37 +20,48 @@ const createPrint = async (req, res) => {
   }
 };
 
-// Update the like array on a print
+// Update the like array
+const updateLikes = async (req, res) => {
+  try {
+    const response = await Print.findByIdAndUpdate(req.body.printId, req.body.command);
+    res.send(response);
+  } catch (err) {
+    res.status(404).json({ error: 'Unable to update print' });
+  }
+};
+
+// Update the like array on a print by adding the user's id
 const likePost = async (req, res) => {
   try {
-    const response = await Print.findByIdAndUpdate(req.body.id, {
+    const response = await Print.findByIdAndUpdate(req.body.printId, {
       $push: { likes: req.body.printerId },
     });
     res.send(response);
   } catch (err) {
-    res.status(404).json({ error: 'Unable to find prints' });
+    res.status(404).json({ error: 'Unable to update print' });
+  }
+};
+
+// Update the like array on a print by removing the user's id
+const unlikePost = async (req, res) => {
+  try {
+    const response = await Print.findByIdAndUpdate(req.body.printId, {
+      $pull: { likes: { $in: req.body.printerId } },
+    });
+    res.send(response);
+  } catch (err) {
+    res.status(404).json({ error: 'Unable to update print' });
   }
 };
 
 // Search through the tags
 const searchTags = async (req, res) => {
   try {
-    const prints = await Print.aggregate([
+    const foundPrints = await Print.aggregate([
       {
-        $project: {
-          author: 1,
-          body: 1,
-          likes: 1,
-          tags: { $cond: [{ $in: [req.query.tag, '$tags'] }, '$tags', 0] },
-        },
+        $match: { tags: { $in: [req.query.tag] } },
       },
     ]);
-    const foundPrints = [];
-    prints.forEach((print) => {
-      if (print.tags) {
-        foundPrints.push(print);
-      }
-    });
     res.send(foundPrints);
   } catch (err) {
     res.status(404).json({ error: 'Unable to search tags' });
@@ -61,5 +72,7 @@ module.exports = {
   getPrints,
   createPrint,
   likePost,
+  updateLikes,
+  unlikePost,
   searchTags,
 };
