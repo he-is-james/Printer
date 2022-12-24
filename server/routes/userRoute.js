@@ -9,6 +9,8 @@ userRouter.post('/sign-up', userController.createUser);
 
 userRouter.post('/logout');
 
-userRouter.get('/liked-posts', userController.getLikedPosts);
+userRouter.get('/all-liked-posts', userController.getLikedPosts);
+
+userRouter.post('/like-post', userController.likePost);
 
 module.exports = userRouter;

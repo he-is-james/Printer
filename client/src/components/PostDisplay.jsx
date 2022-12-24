@@ -22,7 +22,7 @@ function PostsDisplay({ printerId, numPosts }) {
   };
 
   const getLikedPosts = async () => {
-    const likedPosts = await axios.get('http://localhost:4000/user/liked-posts', { params: { id: printerId } });
+    const likedPosts = await axios.get('http://localhost:4000/user/all-liked-posts', { params: { id: printerId } });
     likedPosts.data.sort();
     return likedPosts.data;
   };

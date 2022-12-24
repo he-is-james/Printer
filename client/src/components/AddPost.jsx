@@ -1,30 +1,43 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import {
   Box, Button, TextField, Typography,
 } from '@mui/material';
 
-function AddPost({ printerId, printer, updateNumPosts }) {
+function AddPost({ printer, updateNumPosts }) {
   const [print, setPrint] = useState('');
   const [tag, setTag] = useState('');
   const [tags, setTags] = useState([]);
 
-  const submitPost = () => {
-    console.log(printerId);
-    const saved = localStorage.getItem('posts');
-    const currentPosts = JSON.parse(saved) || [];
+  const submitPrint = async () => {
     const newPost = {
       author: printer,
       body: print,
       likes: [],
       tags,
     };
-    const updatedPosts = [...currentPosts, newPost];
-    localStorage.setItem('posts', JSON.stringify(updatedPosts));
+    const response = await axios.post('http://localhost:4000/print/new-print', newPost);
+    console.log(response);
     setPrint('');
     setTags([]);
     setTag('');
     updateNumPosts();
+    // console.log(printerId);
+    // const saved = localStorage.getItem('posts');
+    // const currentPosts = JSON.parse(saved) || [];
+    // const newPost = {
+    //   author: printer,
+    //   body: print,
+    //   likes: [],
+    //   tags,
+    // };
+    // const updatedPosts = [...currentPosts, newPost];
+    // localStorage.setItem('posts', JSON.stringify(updatedPosts));
+    // setPrint('');
+    // setTags([]);
+    // setTag('');
+    // updateNumPosts();
   };
 
   const addTag = () => {
@@ -43,7 +56,7 @@ function AddPost({ printerId, printer, updateNumPosts }) {
       </Typography>
       <Box>
         <TextField variant="filled" label="Print" value={print} onChange={(e) => setPrint(e.target.value)} />
-        <Button variant="contained" onClick={submitPost}>Print</Button>
+        <Button variant="contained" onClick={submitPrint}>Print</Button>
       </Box>
       <Box>
         <Typography variant="subtitle2">Tags:</Typography>
@@ -60,7 +73,6 @@ function AddPost({ printerId, printer, updateNumPosts }) {
 }
 
 AddPost.propTypes = {
-  printerId: PropTypes.string.isRequired,
   printer: PropTypes.string.isRequired,
   updateNumPosts: PropTypes.func.isRequired,
 };

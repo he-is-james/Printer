@@ -15,16 +15,14 @@ const createUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    console.log(req.query);
     const response = await User.findOne(req.query);
-    console.log(response);
     res.send(response);
   } catch (err) {
     res.status(404).json({ error: 'Unable to find user' });
   }
 };
 
-// get list of posts a user likes
+// Get all user liked posts
 const getLikedPosts = async (req, res) => {
   try {
     const userData = await User.findOne(req.query);
@@ -34,10 +32,21 @@ const getLikedPosts = async (req, res) => {
   }
 };
 
-// add post id to user likes array
+// Add print id to user liked post array
+const likePost = async (req, res) => {
+  try {
+    const response = await User.findByIdAndUpdate(req.body.id, {
+      $push: { postsLiked: req.body.printId },
+    });
+    res.send(response);
+  } catch (err) {
+    res.status(404).json({ error: 'Unable to get liked posts' });
+  }
+};
 
 module.exports = {
   createUser,
   getUser,
   getLikedPosts,
+  likePost,
 };

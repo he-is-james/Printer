@@ -7,7 +7,6 @@ import SearchBar from '../components/SearchBar';
 
 function Home() {
   const { id, handle } = useLocation().state;
-  console.log(id);
 
   // Re-render the posts displayed after adding a new post
   const [numPosts, setNumPosts] = useState(0);
