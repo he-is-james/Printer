@@ -9,13 +9,13 @@ import Sort from '../components/Sort';
 
 function Home() {
   const { id, handle } = useLocation().state;
-  console.log(id);
+
   // Re-render the posts displayed after adding a new post
   const [numPosts, setNumPosts] = useState(0);
   const [sortSelection, setSortSelection] = useState('');
 
   const signOut = async () => {
-    const response = await axios.get('http://localhost:4000/user/sign-out');
+    const response = await axios.post('http://localhost:4000/user/sign-out');
     console.log(response);
   };
   return (

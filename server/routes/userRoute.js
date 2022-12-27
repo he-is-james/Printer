@@ -4,9 +4,9 @@ const passport = require('../passportConfig');
 const userRouter = express.Router();
 const userController = require('../controllers/userController');
 
-userRouter.get(
+userRouter.post(
   '/sign-in',
-  passport.authenticate('sign-up', { session: false }),
+  passport.authenticate('sign-in'),
   (req, res) => {
     res.send(req.user);
   },
@@ -14,13 +14,14 @@ userRouter.get(
 
 userRouter.post(
   '/sign-up',
-  passport.authenticate('sign-in', { session: false }),
+  passport.authenticate('sign-up'),
   (req, res) => {
     res.send(req.user);
   },
 );
 
 userRouter.post('/sign-out', (req, res) => {
+  console.log(req);
   if (req.user) {
     req.session.destroy();
     res.clearCookie('connect.sid');
