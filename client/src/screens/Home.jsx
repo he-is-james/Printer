@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { Container, Box } from '@mui/material';
+import { Container, Box, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import AddPost from '../components/AddPost';
 import PostsDisplay from '../components/PostDisplay';
 import Sort from '../components/Sort';
@@ -13,6 +14,10 @@ function Home() {
   const [numPosts, setNumPosts] = useState(0);
   const [sortSelection, setSortSelection] = useState('');
 
+  const signOut = async () => {
+    const response = await axios.get('http://localhost:4000/user/sign-out');
+    console.log(response);
+  };
   return (
     <Container>
       <Box>
@@ -22,6 +27,7 @@ function Home() {
         <Sort setSortSelection={setSortSelection} />
         <PostsDisplay printerId={id} sortSelection={sortSelection} numPosts={numPosts} />
       </Box>
+      <Button variant="outlined" onClick={signOut}>Sign Out</Button>
     </Container>
   );
 }

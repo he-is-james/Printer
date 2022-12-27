@@ -1,27 +1,5 @@
 const User = require('../models/userModel');
 
-const createUser = async (req, res) => {
-  try {
-    const response = await User.create({
-      handle: req.body.handle,
-      password: req.body.password,
-      postsLiked: [],
-    });
-    res.send(response);
-  } catch (err) {
-    res.status(404).json({ error: 'Unable to create a user' });
-  }
-};
-
-const getUser = async (req, res) => {
-  try {
-    const response = await User.findOne(req.query);
-    res.send(response);
-  } catch (err) {
-    res.status(404).json({ error: 'Unable to find user' });
-  }
-};
-
 // Get all user liked posts
 const getLikedPosts = async (req, res) => {
   try {
@@ -43,8 +21,6 @@ const updateLikes = async (req, res) => {
 };
 
 module.exports = {
-  createUser,
-  getUser,
   getLikedPosts,
   updateLikes,
 };
