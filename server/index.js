@@ -1,9 +1,9 @@
 require('dotenv').config({ path: './.env' });
 const express = require('express');
 const session = require('express-session');
-const passport = require('passport');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
+const passport = require('./passportConfig');
 const db = require('./db');
 
 // Environment varaibles
@@ -14,6 +14,12 @@ const userRouter = require('./routes/userRoute');
 const printRouter = require('./routes/printRoute');
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
+app.use(express.json());
+
 app.use(session({
   secret: 'testXD',
   store: new MongoStore({
@@ -22,9 +28,6 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-
-app.use(cors());
-app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 

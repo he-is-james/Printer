@@ -15,9 +15,14 @@ function Home() {
   const [sortSelection, setSortSelection] = useState('');
 
   const signOut = async () => {
-    const response = await axios.post('http://localhost:4000/user/sign-out');
+    const response = await axios.post('http://localhost:4000/user/sign-out', null, { withCredentials: true });
     console.log(response);
   };
+
+  const test = async () => {
+    await axios.post('http://localhost:4000/user/test', null, { withCredentials: true });
+  };
+
   return (
     <Container>
       <Box>
@@ -28,6 +33,7 @@ function Home() {
         <PostsDisplay printerId={id} sortSelection={sortSelection} numPosts={numPosts} />
       </Box>
       <Button variant="outlined" onClick={signOut}>Sign Out</Button>
+      <Button variant="outlined" onClick={test}>Test</Button>
     </Container>
   );
 }

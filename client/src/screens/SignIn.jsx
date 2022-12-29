@@ -22,7 +22,7 @@ function SignIn() {
 
   // Sign in the user
   const signIn = async () => {
-    const response = await axios.post('http://localhost:4000/user/sign-in', { handle, password });
+    const response = await axios.post('http://localhost:4000/user/sign-in', { handle, password }, { withCredentials: true });
     if (response.data) {
       const userData = {
         // eslint-disable-next-line no-underscore-dangle
