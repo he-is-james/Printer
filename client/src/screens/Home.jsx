@@ -1,17 +1,35 @@
 /* eslint-disable no-param-reassign */
-import { Container, Box } from '@mui/material';
+import { Container, Box, Button } from '@mui/material';
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import AddPost from '../components/AddPost';
 import PostsDisplay from '../components/PostDisplay';
 import Sort from '../components/Sort';
 
 function Home() {
   const { id, handle } = useLocation().state;
-  console.log(id);
+
+  const navigate = useNavigate();
+
   // Re-render the posts displayed after adding a new post
   const [numPosts, setNumPosts] = useState(0);
   const [sortSelection, setSortSelection] = useState('');
+
+  const navigateToSignin = () => {
+    navigate('/');
+  };
+
+  const signOut = async () => {
+    const response = await axios.post('http://localhost:4000/user/sign-out', null, { withCredentials: true });
+    if (response.status === 200) {
+      navigateToSignin();
+    }
+  };
+
+  const test = async () => {
+    await axios.post('http://localhost:4000/user/test', null, { withCredentials: true });
+  };
 
   return (
     <Container>
@@ -22,6 +40,8 @@ function Home() {
         <Sort setSortSelection={setSortSelection} />
         <PostsDisplay printerId={id} sortSelection={sortSelection} numPosts={numPosts} />
       </Box>
+      <Button variant="outlined" onClick={signOut}>Sign Out</Button>
+      <Button variant="outlined" onClick={test}>Test</Button>
     </Container>
   );
 }

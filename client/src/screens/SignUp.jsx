@@ -18,7 +18,7 @@ function SignUp() {
 
   // Sign up a new user
   const signUp = async () => {
-    const response = await axios.post('http://localhost:4000/user/sign-up', { handle, password });
+    const response = await axios.post('http://localhost:4000/user/sign-up', { handle, password }, { withCredentials: true });
     if (response.status === 200) {
       const userData = {
         // eslint-disable-next-line no-underscore-dangle
