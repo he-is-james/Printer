@@ -10,25 +10,19 @@ import Sort from '../components/Sort';
 function Home() {
   const { id, handle } = useLocation().state;
 
-  const navigate = useNavigate();
-
   // Re-render the posts displayed after adding a new post
   const [numPosts, setNumPosts] = useState(0);
   const [sortSelection, setSortSelection] = useState('');
 
-  const navigateToSignin = () => {
-    navigate('/');
-  };
+  // Navigation functions to pages
+  const navigate = useNavigate();
 
+  // Sign out of the current user's account
   const signOut = async () => {
     const response = await axios.post('http://localhost:4000/user/sign-out', null, { withCredentials: true });
     if (response.status === 200) {
-      navigateToSignin();
+      navigate('/');
     }
-  };
-
-  const test = async () => {
-    await axios.post('http://localhost:4000/user/test', null, { withCredentials: true });
   };
 
   return (
@@ -41,7 +35,6 @@ function Home() {
         <PostsDisplay printerId={id} sortSelection={sortSelection} numPosts={numPosts} />
       </Box>
       <Button variant="outlined" onClick={signOut}>Sign Out</Button>
-      <Button variant="outlined" onClick={test}>Test</Button>
     </Container>
   );
 }
