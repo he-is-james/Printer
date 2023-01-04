@@ -6,7 +6,10 @@ const User = require('./models/userModel');
 
 passport.serializeUser((user, done) => {
   console.log('=== serialize ... called ===');
-  console.log(user);
+  console.log({
+    _id: user._id,
+    handle: user.handle,
+  });
   console.log('============================');
   done(null, user._id);
 });

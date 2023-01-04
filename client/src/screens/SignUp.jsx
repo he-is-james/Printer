@@ -18,7 +18,7 @@ function SignUp() {
     if (response.status === 200) {
       const userData = {
         // eslint-disable-next-line no-underscore-dangle
-        id: response.data._id,
+        printerId: response.data._id,
         handle: response.data.handle,
       };
       navigate('/home', { state: userData });
@@ -35,6 +35,7 @@ function SignUp() {
         <TextField label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} />
       </Box>
       <Button variant="contained" onClick={signUp}>Sign Up</Button>
+      <Button variant="Text" onClick={() => navigate('/')}>Back to Sign In</Button>
     </Container>
   );
 }

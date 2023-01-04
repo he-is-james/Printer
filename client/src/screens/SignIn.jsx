@@ -19,7 +19,7 @@ function SignIn() {
     if (response.data) {
       const userData = {
         // eslint-disable-next-line no-underscore-dangle
-        id: response.data._id,
+        printerId: response.data._id,
         handle: response.data.handle,
       };
       navigate('/home', { state: userData });
