@@ -12,20 +12,16 @@ function SignUp() {
   // Navigation functions to pages
   const navigate = useNavigate();
 
-  const navigateToHome = (userData) => {
-    navigate('/home', { state: userData });
-  };
-
   // Sign up a new user
   const signUp = async () => {
     const response = await axios.post('http://localhost:4000/user/sign-up', { handle, password }, { withCredentials: true });
     if (response.status === 200) {
       const userData = {
         // eslint-disable-next-line no-underscore-dangle
-        id: response.data._id,
+        printerId: response.data._id,
         handle: response.data.handle,
       };
-      navigateToHome(userData);
+      navigate('/home', { state: userData });
     } else {
       alert('Error creating an account');
     }
@@ -39,6 +35,7 @@ function SignUp() {
         <TextField label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} />
       </Box>
       <Button variant="contained" onClick={signUp}>Sign Up</Button>
+      <Button variant="Text" onClick={() => navigate('/')}>Back to Sign In</Button>
     </Container>
   );
 }

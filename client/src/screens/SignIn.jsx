@@ -12,14 +12,6 @@ function SignIn() {
   // Navigation functions to pages
   const navigate = useNavigate();
 
-  const navigateToHome = (userData) => {
-    navigate('/home', { state: userData });
-  };
-
-  const navigateToSignUp = () => {
-    navigate('/sign-up');
-  };
-
   // Sign in the user
   const signIn = async (event) => {
     event.preventDefault();
@@ -27,10 +19,10 @@ function SignIn() {
     if (response.data) {
       const userData = {
         // eslint-disable-next-line no-underscore-dangle
-        id: response.data._id,
+        printerId: response.data._id,
         handle: response.data.handle,
       };
-      navigateToHome(userData);
+      navigate('/home', { state: userData });
     } else {
       alert('Handle or password is incorrect');
     }
@@ -47,7 +39,7 @@ function SignIn() {
         <Button variant="contained" onClick={signIn}>Sign In</Button>
         <Box>
           <Typography variant="body1">Don&apos;t have an account?</Typography>
-          <Button variant="outlined" onClick={navigateToSignUp}>Sign up</Button>
+          <Button variant="outlined" onClick={() => navigate('/sign-up')}>Sign up</Button>
         </Box>
       </Box>
     </Container>
